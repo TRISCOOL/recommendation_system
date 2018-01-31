@@ -1,0 +1,13 @@
+.DS_Store
+.idea
+target
+*.iml
+/.settings/
+/.project
+*.ps1
+*.log
+*.zip
+*.classpath
+*.project
+*.settings/
+*.class
