@@ -1,0 +1,20 @@
+#main-head{
+    background-color: #46b8da;
+}
+.content{
+    background-color: #ebebeb;
+    padding-top: 20px;
+}
+.interval{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.content-video{
+    background-color: #ffffff;
+    margin-top: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.login-body{
+    margin-top: 100px;
+}

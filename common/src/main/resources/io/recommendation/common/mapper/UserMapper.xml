@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE io.recommendation.common.mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-io.recommendation.common.mapper.dtd" >
+<io.recommendation.common.mapper namespace="io.auto.commons.io.recommendation.common.mapper.AlarmMapper" >
+    <resultMap id="BaseMap" type="io.auto.commons.models.Alarm">
+        <id column="id" property="id" jdbcType="BIGINT" />
+    </resultMap>
+
+
+	
+	
+	
+	
+</io.recommendation.common.mapper>
