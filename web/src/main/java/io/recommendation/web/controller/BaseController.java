@@ -1,6 +1,9 @@
 package io.recommendation.web.controller;
 
+import com.google.gson.reflect.TypeToken;
+import io.recommendation.common.bean.User;
 import io.recommendation.common.service.impl.RedisService;
+import io.recommendation.common.util.Util;
 import io.recommendation.common.vo.Code;
 import io.recommendation.common.vo.ResponseVo;
 import org.slf4j.Logger;
@@ -47,6 +50,18 @@ public class BaseController {
         }
         logger.error("", ex);
         return vo;
+    }
+
+
+    public User getUserByAuthRequire(HttpServletRequest request){
+        String auth = request.getHeader("Authorization");
+
+        String userJson = redisService.getStr(auth);
+        if (userJson == null || "".equals(userJson))
+            return null;
+
+        User user = Util.jsonToObject(userJson,new TypeToken<User>(){});
+        return user;
     }
 
 

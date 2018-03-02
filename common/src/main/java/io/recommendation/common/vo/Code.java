@@ -7,7 +7,8 @@ public enum Code {
     PARAM_ILLEGAL(400,"param is illegal"),
     AUTHORIZED(90001,"have not login"),
     NOT_FOUND_USER(90002,"not found this user"),
-    PASSWORD_ERROR(90003,"password is error");
+    PASSWORD_ERROR(90003,"password is error"),
+    HAVED_FAVOR(90004,"you have aready favor");
 
 
     int code;

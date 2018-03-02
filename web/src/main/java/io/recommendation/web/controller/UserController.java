@@ -28,7 +28,7 @@ public class UserController extends BaseController{
     public ResponseVo login(@RequestParam("account") String account, @RequestParam("password") String password) {
 
 
-        User user = userService.getUserByAccount(account);
+        User user = userService.findUserByAccount(account);
         if (user == null){
             return ResponseVo.error(Code.NOT_FOUND_USER);
         }

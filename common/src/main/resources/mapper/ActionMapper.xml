@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="io.recommendation.common.mapper.UserMapper" >
+    <resultMap id="ActionTypeMap" type="io.recommendation.common.bean.ActionType">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="type" property="type" jdbcType="VARCHAR" />
+        <result column="value" property="value" jdbcType="INTEGER" />
+    </resultMap>
+
+    <resultMap id="ActionRecordMap" type="io.recommendation.common.bean.ActionRecord">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="type_id" property="typeId" jdbcType="INTEGER" />
+        <result column="movie_id" property="movieId" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+
+        <result column="value" property="value" jdbcType="INTEGER" />
+    </resultMap>
+
+
+    <select id="findActionType" resultMap="ActionTypeMap">
+        select * from action_type WHERE type = #{type};
+    </select>
+
+    <insert id="insertAction" parameterType="io.recommendation.common.bean.ActionRecord">
+        INSERT INTO action_record (`type_id`,`movie_id`,`user_id`)
+        VALUES (actionRecord.typeId,actionRecord.movieId,actionRecord.userId)
+    </insert>
+
+    <select id="findAllAction" resultMap="ActionRecordMap">
+        select ar.*,ap.value from action_record ar
+        LEFT JOIN action_type ap ON ar.type_id = ap.id;
+    </select>
+</mapper>

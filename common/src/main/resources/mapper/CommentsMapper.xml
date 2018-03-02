@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="io.recommendation.common.mapper.CommentsMapper" >
+    <resultMap id="BaseMap" type="io.recommendation.common.bean.Comment">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="content" property="content" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+        <result column="delete" property="delete" jdbcType="INTEGER" />
+        <result column="parent_id" property="parentId" jdbcType="BIGINT" />
+
+        <result column="name" property="userName" jdbcType="VARCHAR" />
+        <result column="logo" property="userLogo" jdbcType="VARCHAR" />
+    </resultMap>
+    
+    <insert id="insertComments" useGeneratedKeys="true" keyProperty="id" parameterType="io.recommendation.common.bean.Comment">
+        INSERT INTO comments (`content`,`create_time`,`delete`,`parent_id`)
+        VALUES
+        (#{comment.content},#{comment.createTime},#{comment.delete},#{comment.parentId})
+    </insert>
+
+    <insert id="insertRelationship">
+        INSERT INTO comments_relationship (`movie_id`,`user_id`,`comment_id`) VALUES (#{movieId},#{userId},#{commentId})
+    </insert>
+
+    <select id="findCommentsByMovie" resultMap="BaseMap">
+        SELECT c.*,u.name FROM comments c
+        LEFT JOIN  comments_relationship  cr ON c.id = cr.comment_id
+        LEFT JOIN `user` u ON cr.user_id = u.id
+        WHERE cr.movie_id = #{movieId}
+    </select>
+</mapper>

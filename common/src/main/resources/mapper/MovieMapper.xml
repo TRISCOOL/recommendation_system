@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="io.recommendation.common.mapper.UserMapper" >
+    <resultMap id="BaseMap" type="io.recommendation.common.bean.Movie">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="type" property="type" jdbcType="VARCHAR" />
+        <result column="address" property="address" jdbcType="VARCHAR" />
+        <result column="logo" property="logo" jdbcType="VARCHAR" />
+        <result column="description" property="description" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="findAllMovie" resultMap="BaseMap">
+        select * from movie ORDER BY id;
+    </select>
+    
+    <select id="findMovieByType" resultMap="BaseMap">
+        SELECT *FROM movie
+        <if test="type != null">
+            WHERE type=#{type}
+        </if>
+        ORDER BY id
+    </select>
+
+    <select id="findMovieById" resultMap="BaseMap">
+        select * from movie WHERE id = #{id};
+    </select>
+</mapper>

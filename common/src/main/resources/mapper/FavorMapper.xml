@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="io.recommendation.common.mapper.FavorMapper" >
+    <resultMap id="BaseMap" type="io.recommendation.common.bean.Favor">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="movie_id" property="movieId" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+    </resultMap>
+    
+    <select id="findFavorByUserAndMovie" resultMap="BaseMap">
+        select * from favor WHERE user_id = #{userId} AND movie_id = #{movieId};
+    </select>
+
+    <select id="findFavorByMovie" resultMap="BaseMap">
+        SELECT *FROM favor WHERE movie_id = #{movieId}
+    </select>
+
+    <insert id="insertOneFavor">
+        INSERT INTO favor (`movie_id`,`user_id`) VALUES (#{favor.movieId},#{favor.userId})
+    </insert>
+</mapper>

@@ -5,6 +5,15 @@ public class User {
     private String userName;
     private String account;
     private String password;
+    private String logo;
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
 
     private String token;
 
