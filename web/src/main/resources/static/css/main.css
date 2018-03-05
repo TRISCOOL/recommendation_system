@@ -18,3 +18,9 @@
 .login-body{
     margin-top: 100px;
 }
+.recommend{
+    display: none;
+}
+.caption{
+    text-align: center;
+}
