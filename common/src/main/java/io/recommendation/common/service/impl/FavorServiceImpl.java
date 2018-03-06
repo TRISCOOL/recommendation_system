@@ -32,4 +32,13 @@ public class FavorServiceImpl implements FavorService{
     public List<Favor> findFavorByMovie(Long movieId) {
         return favorMapper.findFavorByMovie(movieId);
     }
+
+    @Override
+    public boolean delete(Long movieId, Long userId) {
+        int result = favorMapper.delete(movieId,userId);
+        if (result != 0){
+            return true;
+        }
+        return false;
+    }
 }

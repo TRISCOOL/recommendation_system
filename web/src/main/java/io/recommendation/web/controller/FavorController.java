@@ -8,6 +8,7 @@ import io.recommendation.common.vo.ResponseVo;
 import io.recommendation.web.annotations.AuthRequire;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,7 +22,7 @@ public class FavorController extends BaseController{
     @Autowired
     private FavorService favorService;
 
-    @RequestMapping("/insert")
+    @PostMapping("/insert")
     @ResponseBody
     @AuthRequire
     public ResponseVo insertFavor(@RequestParam("movieId")Long movieId, HttpServletRequest request){
@@ -37,14 +38,30 @@ public class FavorController extends BaseController{
         }
 
         Favor favor1 = new Favor();
-        favor1.setMovie_id(movieId);
-        favor1.setUser_id(user.getId());
+        favor1.setMovieId(movieId);
+        favor1.setUserId(user.getId());
 
         boolean result = favorService.insertOneFavor(favor1);
         if (result){
             return ResponseVo.ok();
         }
 
+        return ResponseVo.error(Code.SERVER_ERROR);
+    }
+
+    @PostMapping("/delete")
+    @ResponseBody
+    @AuthRequire
+    public ResponseVo deleteFavor(@RequestParam("movieId")Long movieId,HttpServletRequest request){
+        User user = getUserByAuthRequire(request);
+        if (user == null){
+            return ResponseVo.error(Code.NOT_FOUND_USER);
+        }
+
+        boolean result = favorService.delete(movieId,user.getId());
+        if (result){
+            return ResponseVo.ok();
+        }
         return ResponseVo.error(Code.SERVER_ERROR);
     }
 

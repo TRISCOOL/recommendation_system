@@ -18,4 +18,8 @@
     <insert id="insertOneFavor">
         INSERT INTO favor (`movie_id`,`user_id`) VALUES (#{favor.movieId},#{favor.userId})
     </insert>
+
+    <delete id="delete">
+        DELETE FROM favor WHERE movie_id=#{movieId} AND user_id = #{userId}
+    </delete>
 </mapper>

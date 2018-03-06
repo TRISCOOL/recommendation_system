@@ -55,6 +55,9 @@ public class BaseController {
 
     public User getUserByAuthRequire(HttpServletRequest request){
         String auth = request.getHeader("Authorization");
+        if (auth == null){
+            return null;
+        }
 
         String userJson = redisService.getStr(auth);
         if (userJson == null || "".equals(userJson))

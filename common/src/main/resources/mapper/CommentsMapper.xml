@@ -15,7 +15,7 @@
     <insert id="insertComments" useGeneratedKeys="true" keyProperty="id" parameterType="io.recommendation.common.bean.Comment">
         INSERT INTO comments (`content`,`create_time`,`delete`,`parent_id`)
         VALUES
-        (#{comment.content},#{comment.createTime},#{comment.delete},#{comment.parentId})
+        (#{content},#{createTime},#{delete},#{parentId})
     </insert>
 
     <insert id="insertRelationship">
@@ -23,7 +23,7 @@
     </insert>
 
     <select id="findCommentsByMovie" resultMap="BaseMap">
-        SELECT c.*,u.name FROM comments c
+        SELECT c.*,u.name,u.logo FROM comments c
         LEFT JOIN  comments_relationship  cr ON c.id = cr.comment_id
         LEFT JOIN `user` u ON cr.user_id = u.id
         WHERE cr.movie_id = #{movieId} ORDER BY c.id

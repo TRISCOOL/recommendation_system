@@ -98,7 +98,7 @@ public class MovieController extends BaseController{
 
     private List<CommentVo>  recursiveChildreVo(CommentVo comment,List<CommentVo> comments){
         List<CommentVo> result = comments.stream().filter(commentVo -> {
-            if (commentVo.getId() == comment.getId()){
+            if (commentVo.getParentId() == comment.getId()){
                 return true;
             }
             return false;

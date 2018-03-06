@@ -12,4 +12,6 @@ public interface FavorMapper {
     Favor findFavorByUserAndMovie(@Param("movieId")Long movieId,@Param("userId")Long userId);
 
     List<Favor> findFavorByMovie(@Param("movieId")Long movieId);
+
+    int delete(@Param("movieId")Long movieId,@Param("userId")Long userId);
 }

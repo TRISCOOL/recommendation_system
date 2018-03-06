@@ -70,6 +70,13 @@
 	//var items = [].slice.call(document.querySelectorAll('ol.grid > .grid__item'));
 
 	function init() {
+
+        let movieId = GetQueryString("id");
+        if(movieId == null){
+            alert("找不到电影id");
+            return;
+        }
+
 		/* Icon 14 */
 		var el14 = document.querySelector('button.icobutton'), el14span = el14.querySelector('span'), el14counter = el14.querySelector('span.icobutton__text');
 		new Animocon(el14, {
@@ -207,13 +214,71 @@
 				})
 			],
 			onCheck : function() {
-				el14.style.color = '#F35186';
-				el14counter.innerHTML = Number(el14counter.innerHTML) + 1;
+                let user = window.storage.typeJson.getJsonByKey("user");
+                if(user == null){
+                    alert("登陆了再点吧！");
+                    window.location.href="../login.html"
+                }
+
+                $.ajax({
+                    type:"post",
+                    url:"/favor/insert",
+                    headers: {
+                        "Authorization":user.token
+                    },
+                    data:{
+                        "movieId":movieId
+                    },
+                    async: true,
+                    success:function(response){
+                        var code = response.code;
+                        if(code == 200){
+                            el14.style.color = '#F35186';
+                            el14counter.innerHTML = Number(el14counter.innerHTML) + 1;
+                        }else if (code == 90004){
+                            alert("已经点过了，别点了！");
+                        }else {
+                            alert("发生了一个错误");
+                        }
+
+                    },
+                    error:function(response){
+
+                    }
+                });
 			},
 			onUnCheck : function() {
-				el14.style.color = '#C0C1C3';
-				var current = Number(el14counter.innerHTML);
-				el14counter.innerHTML = current > 1 ? Number(el14counter.innerHTML) - 1 : '';
+                let user = window.storage.typeJson.getJsonByKey("user");
+                if(user == null){
+                    alert("登陆了再点吧！");
+                    window.location.href="../login.html"
+                }
+
+                $.ajax({
+                    type:"post",
+                    url:"/favor/delete",
+                    headers: {
+                        "Authorization":user.token
+                    },
+                    data:{
+                        "movieId":movieId
+                    },
+                    async: true,
+                    success:function(response){
+                        var code = response.code;
+                        if(code == 200){
+                            el14.style.color = '#C0C1C3';
+                            var current = Number(el14counter.innerHTML);
+                            el14counter.innerHTML = current > 1 ? Number(el14counter.innerHTML) - 1 : '';
+                        }else {
+                            alert("发生了一个错误");
+                        }
+
+                    },
+                    error:function(response){
+
+                    }
+                });
 			}
 		});
 		/* Icon 14 */
@@ -293,7 +358,6 @@
 			moTimeline.start();
 		});*/
 	}
-	
 	init();
 
 })(window);

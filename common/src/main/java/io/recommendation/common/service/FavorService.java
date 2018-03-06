@@ -11,4 +11,6 @@ public interface FavorService {
     Favor findFavorByUserAndMovie(Long movieId,Long userId);
 
     List<Favor> findFavorByMovie(Long movieId);
+
+    boolean delete(Long movieId,Long userId);
 }

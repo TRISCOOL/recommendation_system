@@ -16,6 +16,17 @@ public class CommentVo {
     private String browse;
     private List<CommentVo> replyBody;
 
+    //扩展
+    private Long parentId;
+
+    public Long getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
+    }
+
     public Long getId() {
         return id;
     }
@@ -106,6 +117,7 @@ public class CommentVo {
         vo.setImg(comment.getUserLogo());
         vo.setReplyName(comment.getUserName());
         vo.setTime(comment.getCreateTime());
+        vo.setParentId(comment.getParentId());
 
         return vo;
     }
