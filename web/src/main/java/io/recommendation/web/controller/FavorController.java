@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.concurrent.Executors;
 
 @Controller
 @RequestMapping("/favor")
@@ -42,6 +43,12 @@ public class FavorController extends BaseController{
         favor1.setUserId(user.getId());
 
         boolean result = favorService.insertOneFavor(favor1);
+
+        //发送行为得分到kafka
+        Executors.newCachedThreadPool().execute(()->{
+            persistActionAndsendMessage(movieId,user.getId(),"commend");
+        });
+
         if (result){
             return ResponseVo.ok();
         }

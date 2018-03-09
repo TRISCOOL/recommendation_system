@@ -2,6 +2,7 @@ package io.recommendation.web.controller;
 
 import io.recommendation.common.bean.Comment;
 import io.recommendation.common.bean.User;
+import io.recommendation.common.service.ActionService;
 import io.recommendation.common.service.CommentsService;
 import io.recommendation.common.util.Util;
 import io.recommendation.common.vo.Code;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.concurrent.Executors;
 
 @Controller
 @RequestMapping("/comment")
@@ -20,6 +22,9 @@ public class CommentsController extends BaseController{
 
     @Autowired
     private CommentsService commentsService;
+
+    @Autowired
+    private ActionService actionServicel;
 
     @PostMapping("/insert")
     @ResponseBody
@@ -35,6 +40,11 @@ public class CommentsController extends BaseController{
         comment.setDelete(0);
 
         boolean result = commentsService.insertComments(comment);
+
+        //发送行为得分到kafka
+        Executors.newCachedThreadPool().execute(()->{
+            persistActionAndsendMessage(comment.getMovieId(),user.getId(),"commend");
+        });
 
         if (result){
             return ResponseVo.ok();

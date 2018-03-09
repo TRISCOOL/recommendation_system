@@ -11,6 +11,8 @@
     <modules>
         <module>web</module>
         <module>common</module>
+        <module>recommend_core</module>
+        <module>persist</module>
     </modules>
 
     <properties>
@@ -20,6 +22,7 @@
         <install-plugin.version>2.5.2</install-plugin.version>
         <jstl.version>1.2</jstl.version>
         <tomcat.version>9.0.0.M15</tomcat.version>
+        <servlet-api.version>3.1.0</servlet-api.version>
     </properties>
 
     <dependencyManagement>

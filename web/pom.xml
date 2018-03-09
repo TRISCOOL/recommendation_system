@@ -23,6 +23,12 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+
 
         <dependency>
             <groupId>recommendation</groupId>
