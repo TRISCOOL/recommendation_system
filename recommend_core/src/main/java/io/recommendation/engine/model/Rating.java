@@ -3,61 +3,42 @@ package io.recommendation.engine.model;
 import java.io.Serializable;
 
 public class Rating implements Serializable{
-    private int userId;
-    private int movieId;
-    private float rating;
-    private long timestamp;
-
-    public Rating(){}
-
-    public Rating(int userId, int movieId, float rating, long timestamp){
-        this.userId = userId;
-        this.movieId = movieId;
-        this.rating = rating;
-        this.timestamp = timestamp;
-    }
-
-    public int getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
-    public int getMovieId() {
+    public Long getMovieId() {
         return movieId;
     }
 
-    public void setMovieId(int movieId) {
+    public void setMovieId(Long movieId) {
         this.movieId = movieId;
     }
 
-    public float getRating() {
+    public Integer getRating() {
         return rating;
     }
 
-    public void setRating(float rating) {
+    public void setRating(Integer rating) {
         this.rating = rating;
     }
 
-    public long getTimestamp() {
-        return timestamp;
+    private Long userId;
+    private Long movieId;
+    private Integer rating;
+
+    public Rating(){}
+
+    public Rating(Long userId, Long movieId, Integer rating){
+        this.userId = userId;
+        this.movieId = movieId;
+        this.rating = rating;
     }
 
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
-    }
 
-    public static Rating parseRating(String str){
-        String[] fields = str.split("::");
-        if (fields.length != 4) {
-            throw new IllegalArgumentException("Each line must contain 4 fields");
-        }
-        int userId = Integer.parseInt(fields[0]);
-        int movieId = Integer.parseInt(fields[1]);
-        float rating = Float.parseFloat(fields[2]);
-        long timestamp = Long.parseLong(fields[3]);
-        return new Rating(userId, movieId, rating, timestamp);
-    }
+
 }

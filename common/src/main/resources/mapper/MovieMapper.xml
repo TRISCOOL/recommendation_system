@@ -20,9 +20,20 @@
             WHERE type=#{type}
         </if>
         ORDER BY id
+        <if test="offset != null and length != null">
+            limit #{offset},#{length}
+        </if>
     </select>
 
     <select id="findMovieById" resultMap="BaseMap">
         select * from movie WHERE id = #{id};
+    </select>
+
+    <select id="findSimilarById" resultMap="BaseMap">
+        SELECT *FROM movie
+        WHERE
+        type = (
+        SELECT `type` FROM movie WHERE id = #{id}
+        ) limit 0,10
     </select>
 </mapper>

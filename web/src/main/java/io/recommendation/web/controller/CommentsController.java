@@ -43,7 +43,7 @@ public class CommentsController extends BaseController{
 
         //发送行为得分到kafka
         Executors.newCachedThreadPool().execute(()->{
-            persistActionAndsendMessage(comment.getMovieId(),user.getId(),"commend");
+            persistActionAndsendMessage(comment.getMovieId(),user.getId(),"comment");
         });
 
         if (result){

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="io.recommendation.common.mapper.UserMapper" >
+<mapper namespace="io.recommendation.common.mapper.ActionMapper" >
     <resultMap id="ActionTypeMap" type="io.recommendation.common.bean.ActionType">
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="type" property="type" jdbcType="VARCHAR" />
@@ -23,7 +23,7 @@
 
     <insert id="insertAction" parameterType="io.recommendation.common.bean.ActionRecord">
         INSERT INTO action_record (`type_id`,`movie_id`,`user_id`)
-        VALUES (actionRecord.typeId,actionRecord.movieId,actionRecord.userId)
+        VALUES (#{actionRecord.typeId},#{actionRecord.movieId},#{actionRecord.userId})
     </insert>
 
     <select id="findAllAction" resultMap="ActionRecordMap">

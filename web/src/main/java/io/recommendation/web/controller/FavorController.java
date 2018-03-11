@@ -46,7 +46,7 @@ public class FavorController extends BaseController{
 
         //发送行为得分到kafka
         Executors.newCachedThreadPool().execute(()->{
-            persistActionAndsendMessage(movieId,user.getId(),"commend");
+            persistActionAndsendMessage(movieId,user.getId(),"favor");
         });
 
         if (result){

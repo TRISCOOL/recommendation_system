@@ -18,13 +18,13 @@ public class Consumer {
 
     private final int minBatchSize = 20;
 
-    public Consumer(String topic,String bootstrapServer){
+    public Consumer(String topics,String bootstrapServer){
         if (consumer != null)return;
         synchronized (this){
             if (consumer != null)return;
             Properties properties = getProperties(bootstrapServer);
             consumer = new KafkaConsumer<String, String>(properties);
-            consumer.subscribe(Arrays.asList(topic.split(",")));
+            consumer.subscribe(Arrays.asList(topics));
         }
     }
 
@@ -37,6 +37,7 @@ public class Consumer {
                 if (hooks == null || hooks.size() <= 0){
                     return;
                 }
+                System.out.println(record.value());
                 executors.execute(()->{
                     for (StreamHook hook : hooks){
                         hook.process(record.value());
@@ -54,7 +55,7 @@ public class Consumer {
     public Properties getProperties(String bootstrapServer){
         Properties props = new Properties();
         props.put("bootstrap.servers", bootstrapServer);
-        props.put("group.id", "test");
+        props.put("group.id", "recommendPersist");
         props.put("enable.auto.commit", "false");
         props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");

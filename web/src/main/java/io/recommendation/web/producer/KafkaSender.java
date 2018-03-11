@@ -9,6 +9,7 @@ import java.util.Properties;
 public class KafkaSender {
 
     private String BOOTSTRAP_SERVERS = "192.168.101.11:9092,192.168.101.8:9092,192.168.101.5:9092";
+    private static final String topic = "scoreMessage";
 
     private Producer<String, String> producer;
 
@@ -23,7 +24,7 @@ public class KafkaSender {
     }
 
     public void sendMessage(String key,String message){
-        producer.send(new ProducerRecord<String, String>(key,message));
+        producer.send(new ProducerRecord<String, String>(topic,key,message));
     }
 
     public void closeProducer(){

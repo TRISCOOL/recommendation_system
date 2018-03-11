@@ -23,6 +23,9 @@ $(document).ready(function(){
 
                 return JSON.parse(value);
             }
+        },
+        removeByKey:function (key) {
+            localStorage.removeItem(key);
         }
     }
 

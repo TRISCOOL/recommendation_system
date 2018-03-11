@@ -20,12 +20,17 @@ public class MovieServiceImpl implements MovieService{
     }
 
     @Override
-    public List<Movie> findMovieByType(String type) {
-        return movieMapper.findMovieByType(type);
+    public List<Movie> findMovieByType(String type,Integer offset,Integer length) {
+        return movieMapper.findMovieByType(type,offset,length);
     }
 
     @Override
     public Movie findMovieById(Long id) {
         return movieMapper.findMovieById(id);
+    }
+
+    @Override
+    public List<Movie> findSimilarById(Long id) {
+        return movieMapper.findSimilarById(id);
     }
 }

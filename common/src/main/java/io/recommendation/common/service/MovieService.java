@@ -8,7 +8,9 @@ public interface MovieService {
 
     List<Movie> findAllMovie();
 
-    List<Movie> findMovieByType(String type);
+    List<Movie> findMovieByType(String type,Integer offset,Integer length);
 
     Movie findMovieById(Long id);
+
+    List<Movie> findSimilarById(Long id);
 }

@@ -11,6 +11,7 @@ import io.recommendation.common.vo.ResponseVo;
 import io.recommendation.web.vo.CommentVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -42,7 +43,13 @@ public class MovieController extends BaseController{
 
     @RequestMapping("/type")
     @ResponseBody
-    public ResponseVo findMovieByType(@RequestParam("type")String type){
+    public ResponseVo findMovieByType(@RequestParam("type")String type,@RequestParam("page")Integer page,
+                                      @RequestParam("size")Integer size){
+
+        if (page < 1 || size < 1){
+            return ResponseVo.error(Code.SERVER_ERROR);
+        }
+
         if (type == null || "".equals(type)){
             return ResponseVo.error(Code.PARAM_ILLEGAL);
         }
@@ -51,7 +58,7 @@ public class MovieController extends BaseController{
             type = null;
         }
 
-        List<Movie> movieList = movieService.findMovieByType(type);
+        List<Movie> movieList = movieService.findMovieByType(type,(page-1)*size,size);
         return ResponseVo.ok(movieList);
     }
 
@@ -69,6 +76,13 @@ public class MovieController extends BaseController{
         result.put("favorCount",favors.size());
 
         return ResponseVo.ok(result);
+    }
+
+    @GetMapping("/similar")
+    @ResponseBody
+    public ResponseVo getSimilarById(@RequestParam("movieId")Long movieId){
+        List<Movie> movieList = movieService.findSimilarById(movieId);
+        return ResponseVo.ok(movieId);
     }
 
     private List<CommentVo> getComments(List<Comment> comments){
@@ -110,4 +124,5 @@ public class MovieController extends BaseController{
 
         return result;
     }
+
 }
