@@ -7,12 +7,16 @@ import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.util.Bytes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class HbaseDataSource {
+
+    private Logger logger = LoggerFactory.getLogger(HbaseDataSource.class);
 
     private Connection connection;
     private Configuration configuration;
@@ -37,6 +41,7 @@ public class HbaseDataSource {
             List<Cell> cells = rr.listCells();
             for (Cell cell : cells){
                 String cellInfo = cell.toString();
+                logger.info(cellInfo);
                 Long userId = getUserId(cellInfo);
                 Long movieId = getMovieId(cellInfo);
                 Integer score = getScore(cell.getValueArray(),cell.getValueOffset(),cell.getValueLength());
@@ -66,11 +71,11 @@ public class HbaseDataSource {
 
 
     private Long getUserId(String cellInfo){
-        return Long.parseLong(cellInfo.substring(0,1));
+        return Long.parseLong(cellInfo.substring(0,cellInfo.indexOf("/")));
     }
 
     private Long getMovieId(String cellInfo){
-        return Long.parseLong(cellInfo.substring(14,15));
+        return Long.parseLong(cellInfo.substring(cellInfo.indexOf(":")+1,cellInfo.indexOf(":")+2));
     }
 
     private Integer getScore(byte[] values,Integer offset,Integer length){

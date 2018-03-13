@@ -45,17 +45,18 @@ public class Main {
                         .setItemCol("movieId")
                         .setRatingCol("rating");
 
-                ALSModel model = als.fit(training);
+                //ALSModel model = als.fit(training);
+                ALSModel model = als.fit(ratingsWithdf);
                 model.setColdStartStrategy("drop");
 
-                Dataset<Row> predictions = model.transform(test);
+/*                Dataset<Row> predictions = model.transform(test);
                 RegressionEvaluator evaluator = new RegressionEvaluator()
                         .setMetricName("rmse")
                         .setLabelCol("rating")
-                        .setPredictionCol("prediction");
+                        .setPredictionCol("prediction");*/
 
-                Double rmse = evaluator.evaluate(predictions);
-                System.out.println("Root-mean-square error = " + rmse);
+/*                Double rmse = evaluator.evaluate(predictions);
+                System.out.println("Root-mean-square error = " + rmse);*/
 
                 Dataset<Row> userRecs = model.recommendForAllUsers(10);
                 Dataset<Row> itemRecs = model.recommendForAllItems(10);
