@@ -23,35 +23,57 @@
     <script src="js/toastr.min.js" type="text/javascript"></script>
 </head>
 <body>
-<div style="position: absolute;width: 100%;height: 100%;background-color: deeppink">
-    <div style="position: relative;width: 40%;height: 40%;top: 30%;left: 30%;background-color: #1b6d85">
-        <div class="container-fluid login-head">
+<link rel="stylesheet" href="css/style.css">
+<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+<link rel='stylesheet prefetch' href='https://fonts.googleapis.com/icon?family=Material+Icons'>
 
-        </div>
-        <div class="container-fluid login-body">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="input-group">
-                        <span class="input-group-addon" id="basic-addon1">账号</span>
-                        <input id="account" type="text" class="form-control" placeholder="请输入你的账号" aria-describedby="basic-addon1">
+<body>
+<div class="cotn_principal">
+    <div class="cont_centrar">
+        <div class="cont_login">
+            <div class="cont_info_log_sign_up">
+                <div class="col_md_login">
+                    <div class="cont_ba_opcitiy">
+                        <h2>LOGIN</h2>
+                        <p>这是一个登录的地方噢.</p>
+                        <button class="btn_login" onclick="cambiar_login()">LOGIN</button>
+                    </div>
+                </div>
+                <div class="col_md_sign_up">
+                    <div class="cont_ba_opcitiy">
+                        <h2>SIGN UP</h2>
+                        <p>这是一个注册的地方噢.</p>
+                        <button class="btn_sign_up" onclick="cambiar_sign_up()">SIGN UP</button>
                     </div>
                 </div>
             </div>
-            <div class="row" style="margin-top: 20px">
-                <div class="col-md-12">
-                    <div class="input-group">
-                        <span class="input-group-addon" id="basic-addon2">密码</span>
-                        <input type="text" id="password" class="form-control" placeholder="请输入你的密码" aria-describedby="basic-addon1">
-                    </div>
+            <div class="cont_back_info">
+                <div class="cont_img_back_grey"> <img src="po.jpg" alt="" /> </div>
+            </div>
+            <div class="cont_forms" style="overflow:auto">
+                <div class="cont_img_back_"> <img src="po.jpg" alt="" /> </div>
+                <div class="cont_form_login"> <a href="#" onclick="ocultar_login_sign_up()" ><i class="material-icons">&#xE5C4;</i></a>
+                    <h2>LOGIN</h2>
+                    <input type="text" id="account" placeholder="帐号" />
+                    <input type="password" id="password" placeholder="密码" />
+                    <button class="btn_login" id="login" onclick="cambiar_login()">LOGIN</button>
+                </div>
+                <div class="cont_form_sign_up" style="overflow:auto"> <a href="#" onclick="ocultar_login_sign_up()"><i class="material-icons">&#xE5C4;</i></a>
+                    <h2>SIGN UP</h2>
+                    <input type="text" id="register_account" placeholder="帐号" />
+                    <input type="password" id="register_password" placeholder="密码" />
+                    <input type="text" id="register_age" placeholder="年纪" />
+                    <input type="text" id="register_sex" placeholder="性别" />
+                    <input type="text" id="register_name" placeholder="姓名" />
+                    <button class="btn_sign_up" id="register" onclick="cambiar_sign_up()">SIGN UP</button>
                 </div>
             </div>
-            <div class="row" style="text-align: center;margin-top: 20px">
-                <button class="btn btn-success btn-group btn-group-lg" role="group" type="button" id="login">登陆</button>
-            </div>
         </div>
-        <div class="container-fluid login-foot"></div>
     </div>
 </div>
+<script src="js/index.js"></script>
+</body>
+
 </body>
 
 <script type="text/javascript">
@@ -62,6 +84,7 @@
             if(account == null || account == ""){
                 alert("账号不能为空");
                 return;
+
             }
 
             if(password == null || password == ""){
@@ -69,30 +92,64 @@
                 return;
             }
 
+            let url = "/user/login?account="+account+"&password="+password;
+            httpClient("get",url,null,loginProcesser);
+
+        });
+
+        $("#register").on("click",function () {
+            let account = $("#register_account").val();
+            let password = $("#register_password").val();
+            let age = $("#register_age").val();
+            let sex = $("#register_sex").val();
+            let name = $("#register_name").val();
+
+            let data = {
+                "userName":name,
+                "account":account,
+                "password":password,
+                "age":age,
+                "sex":sex
+            }
+
+            let url = "/user/register";
+
+            httpClient("post",url,data,registerProcessor);
+        });
+
+        function registerProcessor(response) {
+            let code = response.code;
+            if (code == 200){
+                alert("注册成功！");
+            }else {
+                alert("用户已存在!");
+            }
+        }
+
+        function loginProcesser(response) {
+            var code = response.code;
+            if(code == 200){
+                let user = response.data;
+                storage.typeJson.putJson(KEY_USER,user);
+
+                window.location.href = "/index.html";
+            }else {
+                alert("登陆失败，请重新登陆");
+            }
+        }
+
+        function httpClient(method,url,data,fun) {
             $.ajax({
-                type:"get",
-                url:"/user/login?account="+account+"&password="+password,
-                data:null,
+                type:method,
+                url:url,
+                data:data,
                 async: false,
-                success:function(response){
-                    var code = response.code;
-                    if(code == 200){
-                        let user = response.data;
-                        storage.typeJson.putJson(KEY_USER,user);
+                success:fun,
 
-                        window.location.href = "/index.html";
-                    }else {
-                        alert("登陆失败，请重新登陆");
-                    }
-
-                },
                 error:function(response){
-
                 }
             });
-
-
-        })
+        }
     });
 </script>
 </html>

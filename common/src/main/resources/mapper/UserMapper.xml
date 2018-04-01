@@ -7,9 +7,18 @@
         <result column="account" property="account" jdbcType="VARCHAR" />
         <result column="password" property="password" jdbcType="VARCHAR" />
         <result column="logo" property="logo" jdbcType="VARCHAR" />
+        <result column="age" property="age" jdbcType="INTEGER" />
+        <result column="sex" property="sex" jdbcType="VARCHAR" />
     </resultMap>
     
     <select id="findUserByAccount" resultMap="BaseMap">
         select * from user WHERE account = #{account};
     </select>
+
+    <insert id="insert">
+        INSERT INTO `user`
+        (`name`,`account`,`password`,`logo`,`age`,`sex`)
+          VALUES
+        (#{user.userName},#{user.account},#{user.password},#{user.logo},#{user.age},#{user.sex})
+    </insert>
 </mapper>

@@ -8,9 +8,7 @@ import io.recommendation.common.vo.Code;
 import io.recommendation.common.vo.ResponseVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 
 @Controller
@@ -45,6 +43,30 @@ public class UserController extends BaseController{
         user.setToken(uuid);
 
         return ResponseVo.ok(user);
+    }
+
+    @PostMapping("/register")
+    @ResponseBody
+    public ResponseVo register(@ModelAttribute User user){
+        if (user.getAccount() == null || user.getPassword() == null){
+            return ResponseVo.error(Code.PARAM_ILLEGAL);
+        }
+
+        if (user.getSex() != null){
+            if (user.getSex().equals("男")){
+                user.setSex("male");
+            }else {
+                user.setSex("female");
+            }
+        }
+
+        boolean b = userService.register(user);
+        if (b){
+            return ResponseVo.ok();
+        }
+
+        return ResponseVo.error(Code.SERVER_ERROR);
+
     }
 
 }

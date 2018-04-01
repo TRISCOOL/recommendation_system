@@ -16,4 +16,19 @@ public class UserServiceImpl implements UserService {
     public User findUserByAccount(String account) {
         return userMapper.findUserByAccount(account);
     }
+
+    @Override
+    public boolean register(User user) {
+
+        User user1 = userMapper.findUserByAccount(user.getAccount());
+        if (user1 != null){
+            return false;
+        }
+
+        int result = userMapper.insert(user);
+        if (result != 0){
+            return true;
+        }
+        return false;
+    }
 }

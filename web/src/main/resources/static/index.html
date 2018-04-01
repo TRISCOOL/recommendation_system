@@ -31,8 +31,8 @@
         <span>猜你喜欢...</span>
     </div>
 
-    <div class="row content recommend">
-        <div class="col-sm-6 col-md-4">
+    <div class="row content recommend" id="recommend-details">
+<!--        <div class="col-sm-6 col-md-4">
             <div class="thumbnail">
                 <img class="movie-logo" src="images/timg.jpeg" alt="...">
                 <div class="caption">
@@ -60,7 +60,7 @@
                     <p><a href="video.html" class="btn btn-primary" role="button">观看</a></p>
                 </div>
             </div>
-        </div>
+        </div>-->
     </div>
 
     <div class="row interval">
@@ -141,7 +141,38 @@
     });
 
     var loadRecommedation = function (user) {
-        //TODO 获取推荐信息
+        $.ajax({
+            type:"get",
+            url:"/movie/recommendations",
+            headers: {
+                "Authorization":user.token
+            },
+            async:true,
+            success:function (response) {
+                let code = response.code;
+                if (code ==200){
+                    let movies = response.data;
+                    if (movies != null && movies.length > 0){
+                        $(".recommend").css("display","block");
+                        let recommendDetails = $("#recommend-details");
+                        for (let i=0;i<movies.length;i++){
+                            let movie = movies[i];
+                            let content = $('<div class="col-sm-6 col-md-4">\n' +
+                                '            <div class="thumbnail">\n' +
+                                '                <img class="movie-logo" style="width: 300px;height: 300px" src="'+movie.logo+'" alt="...">\n' +
+                                '                <div class="caption">\n' +
+                                '                    <h3>'+movie.name+'</h3>\n' +
+                                '                    <p><a href="video.html?id='+movie.id+'" class="btn btn-primary" role="button">观看</a></p>\n' +
+                                '                </div>\n' +
+                                '            </div>\n' +
+                                '        </div>');
+
+                            recommendDetails.append(content);
+                        }
+                    }
+                }
+            }
+        })
     }
 
     var loadHomePage = function () {
@@ -159,7 +190,7 @@
                             let movie = movies[i];
                             let content = $('<div class="col-sm-6 col-md-4">\n' +
                                 '            <div class="thumbnail">\n' +
-                                '                <img class="movie-logo" src="'+movie.logo+'" alt="...">\n' +
+                                '                <img class="movie-logo" style="width: 300px;height: 300px" src="'+movie.logo+'" alt="...">\n' +
                                 '                <div class="caption">\n' +
                                 '                    <h3>'+movie.name+'</h3>\n' +
                                 '                    <p><a href="video.html?id='+movie.id+'" class="btn btn-primary" role="button">观看</a></p>\n' +

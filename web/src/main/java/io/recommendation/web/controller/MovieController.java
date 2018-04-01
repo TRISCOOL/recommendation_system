@@ -3,11 +3,14 @@ package io.recommendation.web.controller;
 import io.recommendation.common.bean.Comment;
 import io.recommendation.common.bean.Favor;
 import io.recommendation.common.bean.Movie;
+import io.recommendation.common.bean.User;
 import io.recommendation.common.service.CommentsService;
 import io.recommendation.common.service.FavorService;
 import io.recommendation.common.service.MovieService;
+import io.recommendation.common.service.RankService;
 import io.recommendation.common.vo.Code;
 import io.recommendation.common.vo.ResponseVo;
+import io.recommendation.web.annotations.AuthRequire;
 import io.recommendation.web.vo.CommentVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +38,9 @@ public class MovieController extends BaseController{
 
     @Autowired
     private FavorService favorService;
+
+    @Autowired
+    private RankService rankService;
 
     @RequestMapping("/all")
     @ResponseBody
@@ -82,7 +89,25 @@ public class MovieController extends BaseController{
     @ResponseBody
     public ResponseVo getSimilarById(@RequestParam("movieId")Long movieId){
         List<Movie> movieList = movieService.findSimilarById(movieId);
-        return ResponseVo.ok(movieId);
+        return ResponseVo.ok(movieList);
+    }
+
+    @GetMapping("/get_rank")
+    @ResponseBody
+    public ResponseVo getRanks(){
+        List<Movie> movieList = rankService.ranks();
+        return ResponseVo.ok(movieList);
+
+    }
+
+    @GetMapping("/recommendations")
+    @ResponseBody
+    @AuthRequire
+    public ResponseVo getRecommendationsForUser(HttpServletRequest request){
+        User user = getUserByAuthRequire(request);
+        List<Movie> movieList = movieService.getRecommendationsForUser(user.getId());
+
+        return ResponseVo.ok(movieList);
     }
 
     private List<CommentVo> getComments(List<Comment> comments){

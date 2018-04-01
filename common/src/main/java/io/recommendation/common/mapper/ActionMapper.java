@@ -9,4 +9,6 @@ public interface ActionMapper {
     ActionType findActionType(@Param("type")String type);
 
     int insertAction(@Param("actionRecord")ActionRecord actionRecord);
+
+
 }

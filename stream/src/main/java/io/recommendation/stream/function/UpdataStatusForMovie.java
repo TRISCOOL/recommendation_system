@@ -15,7 +15,10 @@ public class UpdataStatusForMovie implements Function2<List<Integer>,Optional<In
         }
 
         for (Integer everyScore : values){
-            nowScore += everyScore;
+            System.out.println(">>>>>>>>>>>>>>>>>>"+everyScore);
+            if (everyScore != null){
+                nowScore += everyScore;
+            }
         }
 
         //返回更新后的值

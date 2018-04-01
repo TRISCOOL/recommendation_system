@@ -10,6 +10,14 @@
         <result column="description" property="description" jdbcType="VARCHAR" />
     </resultMap>
 
+    <resultMap id="WatchRecordMap" type="io.recommendation.common.bean.WatchRecord">
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="movie_id" property="movieId" jdbcType="BIGINT" />
+        <result column="age" property="age" jdbcType="INTEGER" />
+        <result column="sex" property="sex" jdbcType="VARCHAR" />
+        <result column="type" property="type" jdbcType="VARCHAR" />
+    </resultMap>
+
     <select id="findAllMovie" resultMap="BaseMap">
         select * from movie ORDER BY id limit 0,15;
     </select>
@@ -35,5 +43,36 @@
         type = (
         SELECT `type` FROM movie WHERE id = #{id}
         ) limit 0,10
+    </select>
+
+    <select id="analysisForTypeCount" resultType="io.recommendation.common.bean.AnasisyForType">
+        SELECT m.type,COUNT(*) AS `count` FROM action_record a LEFT JOIN movie m ON m.id=a.movie_id GROUP BY m.type;
+    </select>
+
+    <select id="analysisForSexCount" resultType="io.recommendation.common.bean.AnasisyForSex">
+        SELECT u.sex,COUNT(*) AS `count` FROM action_record a LEFT JOIN `user` u ON u.id=a.user_id GROUP BY u.sex;
+    </select>
+
+    <select id="selectMoviesByIds" resultMap="BaseMap">
+        select * from movie WHERE id IN
+        <foreach collection="movieIds" item="movieId" open="(" close=")" separator=",">
+            #{movieId}
+        </foreach>;
+    </select>
+
+    <select id="findWatchRecord" resultMap="WatchRecordMap">
+        SELECT
+	u.id AS user_id,
+	m.id AS movie_id,
+	u.age,
+	u.sex,
+	m.type
+FROM
+	action_record ar
+LEFT JOIN movie m ON ar.movie_id = m.id
+LEFT JOIN `user` u ON ar.user_id = u.id
+GROUP BY
+	user_id,
+	movie_id;
     </select>
 </mapper>

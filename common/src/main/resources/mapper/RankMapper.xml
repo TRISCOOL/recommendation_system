@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="io.recommendation.common.mapper.RankMapper" >
+    <resultMap id="BaseMap" type="io.recommendation.common.bean.Rank">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="movie_id" property="movieId" jdbcType="BIGINT" />
+        <result column="score" property="score" jdbcType="INTEGER" />
+    </resultMap>
+
+    <select id="findByMovieId" resultMap="BaseMap">
+        SELECT *FROM rank WHERE movie_id = #{movieId}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO rank (`movie_id`,`score`) VALUES (#{rank.movieId},#{rank.score})
+    </insert>
+
+    <update id="update">
+        UPDATE rank SET score = #{rank.score} WHERE movie_id = #{rank.movieId}
+    </update>
+
+    <select id="ranks" resultType="io.recommendation.common.bean.Movie">
+        SELECT m.* FROM rank r
+        LEFT JOIN movie m  ON r.movie_id=m.id
+        ORDER BY score DESC limit 0,20
+    </select>
+</mapper>

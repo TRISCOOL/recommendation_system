@@ -1,21 +1,22 @@
 package io.recommendation.engine;
 
+import io.recommendation.engine.function.TransfromationType;
 import io.recommendation.engine.model.Rating;
 import io.recommendation.engine.source.HbaseDataSource;
-import org.apache.spark.ml.evaluation.RegressionEvaluator;
 import org.apache.spark.ml.recommendation.ALS;
 import org.apache.spark.ml.recommendation.ALSModel;
-import org.apache.spark.sql.Dataset;
-import org.apache.spark.sql.Row;
-import org.apache.spark.sql.SparkSession;
+import org.apache.spark.sql.*;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Properties;
 
 public class Main {
 
     private static final String TABLE_NAME = "reconmmend_relationship";
     private static final String COLUMNS_FAMILY = "movie_favor";
+
+    private static final String JDBC_URL = "jdbc:mysql://192.168.102.24/recommendation?useUnicode=true&characterEncoding=UTF-8";
 
     public static void main(String[] args){
         try {
@@ -61,8 +62,25 @@ public class Main {
                 Dataset<Row> userRecs = model.recommendForAllUsers(10);
                 Dataset<Row> itemRecs = model.recommendForAllItems(10);
 
-                userRecs.show();
-                itemRecs.show();
+
+
+                Properties properties = new Properties();
+                properties.put("user", "root");
+                properties.put("password", "password");
+
+                //Dataset<Row> result = userRecs.map(new TransfromationType(),Encoders.javaSerialization(Row.class));
+            userRecs.show();
+                Dataset<Row> result = userRecs.withColumn("recommendations",new Column("recommendations").cast("string"));
+
+                itemRecs.withColumn("recommendations",new Column("recommendations").cast("string"));
+                //itemRecs.col("recommendations").cast("string");
+
+                result.write().mode(SaveMode.Overwrite).jdbc(JDBC_URL, "user_recommend_item", properties);
+
+
+/*                itemRecs.write()
+                        .mode(SaveMode.Overwrite)
+                        .jdbc(JDBC_URL, "item_recommend_user", properties);*/
 
                 spark.stop();
 

@@ -9,7 +9,7 @@ var initHead = function () {
 
     let userName = getUserName();
 
-    var h1 = $('<div class="col-md-8"><h1>Recommendation System <small>emmmmmm</small></h1></div>');
+    var h1 = $('<div class="col-md-8"><a href="../index.html"><h1>Recommendation System <small>emmmmmm</small></h1></a></div>');
     var h2 = $('<div class="col-md-2"><h1><small><span class="glyphicon glyphicon-user" aria-hidden="true"></span></small></h1></div>');
     if(userName != null){
         h2 = $('<div class="col-md-2"><h1><small><span class="glyphicon glyphicon-user" aria-hidden="true">'+userName+'</span></small></h1></div>')
@@ -32,8 +32,8 @@ var initHead = function () {
         '            <li role="presentation"><a href="../type.html?type=terror&page=1&size=9">恐怖</a></li>\n' +
         '            <li role="presentation"><a href="../type.html?type=comedy&page=1&size=9">喜剧</a></li>\n' +
         '            <li role="presentation"><a href="../type.html?type=love&page=1&size=9">爱情</a></li>\n' +
-        '            <li role="presentation"><a href="../type.html?type=action&page=1&size=9">动作</a></li>\n' +
-        '            <li role="presentation"><a href="../type.html?type=all&page=1&size=9">全部</a></li>');
+        '            <li role="presentation"><a href="../type.html?type=action&page=1&size=9">动作</a></li>\n'+
+        '            <li role="presentation"><a href="../analysis.html">电影受众分析</a></li>');
 
     nav.html(navChild);
     $(".navigation-list").html(nav);

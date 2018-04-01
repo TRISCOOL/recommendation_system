@@ -14,6 +14,7 @@
         <module>recommend_core</module>
         <module>persist</module>
         <module>stream</module>
+        <module>command_executor</module>
     </modules>
 
     <properties>
