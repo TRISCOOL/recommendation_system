@@ -13,6 +13,6 @@ public class GetMovieMapScore implements PairFunction<ConsumerRecord<String,Stri
     public Tuple2<String, Integer> call(ConsumerRecord<String, String> record) throws Exception {
         String jsonValue = record.value();
         Rating rating = JsonUtil.jsonToObject(jsonValue,new TypeToken<Rating>(){});
-        return new Tuple2<String, Integer>(rating.getMovieId().toString(),rating.getRating());
+        return new Tuple2<String, Integer>(rating.getMovieId().toString(),rating.getScore());
     }
 }

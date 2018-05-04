@@ -3,6 +3,18 @@ package io.recommendation.stream.model;
 import java.io.Serializable;
 
 public class Rating implements Serializable{
+    private Long userId;
+    private Long movieId;
+    private Integer score;
+
+    public Integer getScore() {
+        return score;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
+    }
+
     public Long getUserId() {
         return userId;
     }
@@ -19,24 +31,12 @@ public class Rating implements Serializable{
         this.movieId = movieId;
     }
 
-    public Integer getRating() {
-        return rating;
-    }
-
-    public void setRating(Integer rating) {
-        this.rating = rating;
-    }
-
-    private Long userId;
-    private Long movieId;
-    private Integer rating;
-
     public Rating(){}
 
-    public Rating(Long userId, Long movieId, Integer rating){
+    public Rating(Long userId, Long movieId, Integer score){
         this.userId = userId;
         this.movieId = movieId;
-        this.rating = rating;
+        this.score = score;
     }
 
 

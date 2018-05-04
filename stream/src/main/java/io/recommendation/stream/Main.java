@@ -30,16 +30,16 @@ import java.util.Map;
 
 public class Main {
 
-    private static final String HDFS_CHECK= "hdfs://192.168.102.3:8020/rank4/";
+    private static final String HDFS_CHECK= "hdfs://192.168.102.3:8020/rank9/";
 
     public static void main(String[] args){
 
         //创建流对象
-        SparkConf conf = new SparkConf().setAppName("realTimeRank8");
+        SparkConf conf = new SparkConf().setAppName("realTimeRank13");
         JavaSparkContext javaSparkContext = new JavaSparkContext(conf);
         javaSparkContext.setLogLevel("WARN");
 
-        JavaStreamingContext jsc = new JavaStreamingContext(javaSparkContext, Durations.seconds(10));
+        JavaStreamingContext jsc = new JavaStreamingContext(javaSparkContext, Durations.seconds(5));
 
         //创建流对象
         Map<String,Object> kafkaConfig = getKafkaParams();
@@ -63,8 +63,8 @@ public class Main {
                 String value = record.value();
                 System.out.println(value);
                 Rating rating = JsonUtil.jsonToObject(value,new TypeToken<Rating>(){});
-                System.out.println("rating :"+JsonUtil.objectToJson(rating)+"--"+rating.getMovieId()+":"+rating.getRating());
-                return new Tuple2<String, Integer>(rating.getMovieId().toString(),rating.getRating());
+                System.out.println("rating :"+JsonUtil.objectToJson(rating)+"--"+rating.getMovieId()+":"+rating.getScore());
+                return new Tuple2<String, Integer>(rating.getMovieId().toString(),rating.getScore());
             }
         });
 
@@ -104,7 +104,7 @@ public class Main {
     private static Map<String,Object> getKafkaParams(){
         Map<String, Object> kafkaParams = new HashMap<>();
         kafkaParams.put("bootstrap.servers", "192.168.101.11:9092,192.168.101.8:9092,192.168.101.5:9092");
-        kafkaParams.put("group.id", "realTimeRank3");
+        kafkaParams.put("group.id", "realTimeRank4");
         kafkaParams.put("enable.auto.commit", "false");
         kafkaParams.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         kafkaParams.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
